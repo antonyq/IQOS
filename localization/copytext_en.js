@@ -1,0 +1,11 @@
+window.localization = {
+    "TEXT0": "Welcome to Change! <br> You are about to learn how to use <br> your IQOS like a pro",
+    "TEXT1":"Push to open",
+    "TEXT2":"Insert with the tobacco facing down",
+    "TEXT3":"Press and hold",
+    "TEXT4":"IQOS is On",
+    "TEXT5":"You've got six minutes to enjoy heated tobacco at its finest.",
+    "TEXT6":"Experience is ending",
+    "TEXT7":"Lift cap and remove tobacco stick",
+    "TEXT8":"IQOS is charging"
+}

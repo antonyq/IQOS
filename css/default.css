@@ -1,0 +1,93 @@
+@font-face {  font-family: Planer-Bold;  src: local("Planer-Bold"), url(../font/Planer-Bold.otf);  }
+@font-face {  font-family: Planer-BoldItalic;  src: local("Planer-BoldItalic"), url(../font/Planer-BoldItalic.otf);  }
+@font-face {  font-family: Planer-DemiBold;  src: local("Planer-DemiBold"), url(../font/Planer-DemiBold.otf);  }
+@font-face {  font-family: Planer-DemiBoldItalic;  src: local("Planer-DemiBoldItalic"), url(../font/Planer-DemiBoldItalic.otf);  }
+@font-face {  font-family: Planer-ExtraBold;  src: local("Planer-ExtraBold"), url(../font/Planer-ExtraBold.otf);  }
+@font-face {  font-family: Planer-ExtraBoldItalic;  src: local("Planer-ExtraBoldItalic"), url(../font/Planer-ExtraBoldItalic.otf);  }
+
+@font-face {  font-family: Planer-ExtraLight;  src: local("Planer-ExtraLight"), url(../font/Planer-ExtraLight.otf);  }
+@font-face {  font-family: Planer-Regular;  src: local("Planer-Regular"), url(../font/Planer-Regular.otf);  }
+
+.text {
+    position: absolute;
+    top: 180px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-weight: lighter;
+    font-size: 55px;
+    font-family: Planer-Regular;
+
+}
+
+.touch-area{  position: absolute;  }
+
+.progress-bar{
+    position: relative;
+    bottom: 102px;
+    height: 25px;
+    max-width: 245px;
+    margin: 0 auto;
+    padding-left: 0;
+    text-align: center;
+    z-index: 2;
+}
+
+.circle {
+    height: 25px;
+    width: 25px;
+    margin-left: 28px;
+    list-style: none;
+    border-radius: 50%;
+    cursor: pointer;
+    float: left;
+
+    background: rgb(219,217,221);
+}
+
+.active{
+    position: relative;
+    right: -5px;
+    height: 40px;
+    width: 40px;
+    margin-top: -3px;
+    background: rgb(180,160,135);
+}
+
+.footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 200px;
+}
+
+.gradient{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 200px;
+
+    background: transparent;
+    background: -moz-linear-gradient(bottom, rgba(250, 250, 250, 2) 0%, rgba(0, 0, 0, 0) 100%);
+    background: -webkit-linear-gradient(bottom, rgba(250, 250, 250, 2) 0%, rgba(0, 0, 0, 0) 100%);
+    background: -o-linear-gradient(bottom, rgba(250, 250, 250, 2) 0%, rgba(0, 0, 0, 0) 100%);
+    background: -ms-linear-gradient(bottom, rgba(250, 250, 250, 2) 0%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(bottom, rgba(250, 250, 250, 2) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+#touch-area1{
+    top: 72%;
+    left: 30%;
+    height: 26%;
+    width: 39%;
+    display: block;
+}
+
+#touch-area2{
+    top: 69%;
+    left: 2%;
+    height: 29%;
+    width: 30%;
+    transform: rotate(30deg);
+    display: block;
+}
