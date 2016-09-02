@@ -1,5 +1,7 @@
 var swiping = false;
 var cycling = false;
+var currentScreen = 0;
+var screens = [0, 11, 35, 42];
 var cycles = [
     {   start: 5, end: 6, created: false   },
     {   start: 15, end: 16, created: false }
@@ -7,20 +9,18 @@ var cycles = [
 var texts = [
     {   start: 0, end: 3    },
     {   start: 5, end: 7    },
-    {   start: 11, end: 14  },
-    {   start: 15, end: 18  },
+    {   start: 11, end: 13  },
+    {   start: 15, end: 17  },
     {   start: 20, end: 22  },
-    {   start: 24, end: 30  },
+    {   start: 23, end: 29  },
     {   start: 31, end: 33  },
-    {   start: 37, end: 40  },
-    {   start: 46, end: 50  }
+    {   start: 35, end: 36  },
+    {   start: 45, end: 50  }
 ];
 var touchAreas = [
     {   start: 5, end: 7   },
     {   start: 7, end: 18  }
 ];
-var currentScreen = 0;
-var momentsMenu = [0, 11, 35, 42];
 var animationDuration = 500; //ms
 
 var video;
@@ -28,11 +28,12 @@ var video;
 window.onload = function () {
     video = document.getElementsByTagName("video")[0];
 
-    loadText("localization/copytext_en");
+    loadText("localization/copytext_en.json");
 
     $(video).swipe({
         swipe: function (event, direction, distance, duration, fingerCount) {
             if (!cycling){
+                video.pause();
                 swiping = true;
                 swipeHandler(video, direction);
             }
@@ -45,8 +46,8 @@ window.onload = function () {
 }
 
 function mainFlowListener () {
-    for (var i = 0; i < momentsMenu.length; i++){
-        if (video.currentTime > momentsMenu[i]) currentScreen = i;
+    for (var i = 0; i < screens.length; i++){
+        if (video.currentTime > screens[i]) currentScreen = i;
     }
     cycles.forEach(function (cycle) {
         if (!swiping && !cycle.created && video.currentTime < cycle.start) {
@@ -57,8 +58,8 @@ function mainFlowListener () {
 }
 
 function swipeHandler (video, direction) {
-    if (direction == 'left' && currentScreen != momentsMenu.length - 3) setCurrentScreen(video, ++currentScreen);
-    else if (direction == 'right' && currentScreen != 0) setCurrentScreen(video, ++currentScreen);
+    if (direction == 'left' && currentScreen != screens.length - 1) setCurrentScreen(video, ++currentScreen);
+    else if (direction == 'right' && currentScreen != 0) setCurrentScreen(video, --currentScreen);
     swiping = false;
 }
 
@@ -81,22 +82,23 @@ function getCycleListener (cycle) {
 }
 
 function textListener() {
-    var text = $(".text");
-    for (var i = 0; i < texts.length; i++){
-        if (video.currentTime > texts[i].end && video.currentTime < texts[i+1].start) text.fadeOut(animationDuration);
+    var textArea = $(".text");
+    for (text in texts)
+    for (var i = 0; i < texts.length - 1; i++){
+        if (video.currentTime > texts[i].end && video.currentTime < texts[i+1].start) textArea.fadeOut(animationDuration);
         else if (video.currentTime > texts[i].start && video.currentTime < texts[i+1].start) {
-            text.html(window.localization["TEXT" + i]);
-            text.fadeIn(animationDuration);
+            textArea.html(texts[i].string);
+            textArea.fadeIn(animationDuration);
         }
     }
 }
 
 function menuListener() {
     document.getElementsByClassName("active")[0].classList.remove("active");
-    if (video.currentTime < momentsMenu[1]) document.getElementById("li0").classList.add("active");
-    else if (video.currentTime >= momentsMenu[1] && video.currentTime < momentsMenu[2]) document.getElementById("li1").classList.add("active");
-    else if (video.currentTime >= momentsMenu[2] && video.currentTime < momentsMenu[3]) document.getElementById("li2").classList.add("active");
-    else if (video.currentTime >= momentsMenu[3]) document.getElementById("li3").classList.add("active");
+    if (video.currentTime < screens[1]) document.getElementById("li0").classList.add("active");
+    else if (video.currentTime >= screens[1] && video.currentTime < screens[2]) document.getElementById("li1").classList.add("active");
+    else if (video.currentTime >= screens[2] && video.currentTime < screens[3]) document.getElementById("li2").classList.add("active");
+    else if (video.currentTime >= screens[3]) document.getElementById("li3").classList.add("active");
 }
 
 function touchAreaListener() {
@@ -108,7 +110,7 @@ function touchAreaListener() {
 }
 
 function setCurrentScreen(video, currentScreen) {
-    setCurrentMoment(video, momentsMenu[currentScreen]);
+    setCurrentMoment(video, screens[currentScreen]);
 }
 
 function setCurrentMoment(video, currentMoment) {
@@ -119,9 +121,9 @@ function setCurrentMoment(video, currentMoment) {
 function loadText(path) {
     if (window.location.href.match(/file:/)) {
         var script = document.createElement("script");
-        script.src = path + ".js";
+        script.src = path.replace("json", "js");
         document.head.appendChild(script);
-    } else loadJSON(path + ".json");
+    } else loadJSON(path);
 }
 
 function loadJSON(path) {
@@ -130,8 +132,14 @@ function loadJSON(path) {
     request.send();
     request.onreadystatechange = function () {
         if(request.readyState == 4) {
-            if(request.status != 200) document.body.innerHTML = "Could not retrieve data";
-            else window.localization = JSON.parse(request.responseText);
+            if(request.status == 200) {
+                var textCounter = 0;
+                window.localization = JSON.parse(request.responseText);
+                for (text in window.localization){
+                    if (window.localization.hasOwnProperty(text)) texts[textCounter++].string = window.localization[text];
+                }
+            }
+            else document.body.innerHTML = "Could not retrieve data";
         }
     }
 }
