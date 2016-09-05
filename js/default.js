@@ -4,7 +4,7 @@ var currentScreen = 0;
 var screens = [0, 11, 35, 42];
 var cycles = [
     {   start: 5, end: 6, created: false   },
-    {   start: 15, end: 16.5, created: false }
+    {   start: 15, end: 16, created: false }
 ];
 var texts = [
     {   start: 0, end: 3    },
@@ -22,11 +22,10 @@ var touchAreas = [
     {   start: 7, end: 18  }
 ];
 var stops = [
-    {   start: 11, end: 13  },
+    {   start: 12, end: 12.5  },
     {   start: 35, end: 36  }
 ];
 
-var animationDuration = 500; //ms
 var timeDelta = 1; //sec
 
 var video;
@@ -74,21 +73,21 @@ function swipeHandler (video, direction) {
     if (direction == 'left' && currentScreen != screens.length - 1) setCurrentScreen(video, ++currentScreen);
     else if (direction == 'right' && currentScreen != 0) setCurrentScreen(video, --currentScreen);
     else if (direction == 'up' || direction == 'down') {
-        for (stop of stops){
+        stops.forEach(function (stop) {
             if (video.currentTime > stops.start && video.currentTime < stops.end) verticalSwipeHandler();
             else video.play();
-        }
+        });
     }
-    setTimeout(() => {swiping = false}, timeDelta * 1000);
+    setTimeout(function () {swiping = false}, timeDelta * 1000);
 }
 
 function verticalSwipeHandler () {
-    for (stop of stops){
+    stops.forEach(function (stop) {
         if (stop.start < video.currentTime && stop.end >= video.currentTime){
             video.play();
-            break;
+            return;
         }
-    }
+    });
 }
 
 function getCycleListener (cycle) {
@@ -110,13 +109,15 @@ function getCycleListener (cycle) {
 }
 
 function textListener() {
-    var textArea = $(".text");
-    for (text in texts)
+    var textArea = document.getElementsByClassName("text")[0];
     for (var i = 0; i < texts.length - 1; i++){
-        if (video.currentTime > texts[i].end && video.currentTime < texts[i+1].start) textArea.fadeOut(animationDuration);
-        else if (video.currentTime > texts[i].start && video.currentTime < texts[i+1].start) {
-            textArea.html(texts[i].string);
-            textArea.fadeIn(animationDuration);
+        if (video.currentTime > texts[i].end && video.currentTime < texts[i+1].start && !('fadeOut' in textArea.classList)) {
+            textArea.classList.remove("fadeIn");
+            textArea.classList.add("fadeOut");
+        } else if (video.currentTime > texts[i].start && video.currentTime < texts[i+1].start && !('fadeIn' in textArea.classList)) {
+            textArea.innerHTML = texts[i].string;
+            textArea.classList.remove("fadeOut");
+            textArea.classList.add("fadeIn");
         }
     }
 }

@@ -15,8 +15,9 @@
     text-align: center;
     color: white;
     font-weight: lighter;
-    font-size: 55px;
+    font-size: 3.3em;
     font-family: Planer-Regular;
+    display: none;
 
 }
 
@@ -54,18 +55,11 @@
     background: rgb(180,160,135);
 }
 
-.footer{
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 200px;
-}
-
 .gradient{
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 200px;
+    height: 15%;
 
     background: transparent;
     background: -moz-linear-gradient(bottom, rgba(250, 250, 250, 2) 0%, rgba(0, 0, 0, 0) 100%);
@@ -92,12 +86,30 @@
     display: block;
 }
 
+.health{
+    position: absolute;
+    bottom: 0;
+    height: 11%;
+    width: 100%;
+    text-align: center;
+    font-family: Planer-Regular;
+    font-size: 3em;
+    text-transform: uppercase;
+    background: white;
+    z-index: 100;
+    display: table;
+}
+
+.health > span {
+    vertical-align: middle;
+    display: table-cell;
+}
 
 .fadeIn{
-    -webkit-animation: fadein 0.5s ease;
-    -o-animation: fadein 0.5s ease;
-    -moz-animation: fadein 0.5s ease;
-    animation: fadein 0.5s ease;
+    -webkit-animation: fadein 1s ease;
+    -o-animation: fadein 1s ease;
+    -moz-animation: fadein 1s ease;
+    animation: fadein 1s ease;
     display: block;
 }
 
@@ -107,14 +119,16 @@
 }
 
 .fadeOut{
-    -webkit-animation: fadeout 0.5s ease;
-    -o-animation: fadeout 0.5s ease;
-    -moz-animation: fadeout 0.5s ease;
-    animation: fadeout 0.5s ease;
-    display: block;
+    -webkit-animation: fadeout 1s ease;
+    -o-animation: fadeout 1s ease;
+    -moz-animation: fadeout 1s ease;
+    animation: fadeout 1s ease;
 }
 
 @keyframes fadeout {
-    from {  opacity: 0;  }
-    to {  opacity: 1;  }
+    from {  opacity: 1;  }
+    to {  
+        opacity: 0;
+        display: none;
+    }
 }
