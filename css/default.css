@@ -91,3 +91,30 @@
     transform: rotate(30deg);
     display: block;
 }
+
+
+.fadeIn{
+    -webkit-animation: fadein 0.5s ease;
+    -o-animation: fadein 0.5s ease;
+    -moz-animation: fadein 0.5s ease;
+    animation: fadein 0.5s ease;
+    display: block;
+}
+
+@keyframes fadein {
+    from {  opacity: 0;  }
+    to {  opacity: 1;  }
+}
+
+.fadeOut{
+    -webkit-animation: fadeout 0.5s ease;
+    -o-animation: fadeout 0.5s ease;
+    -moz-animation: fadeout 0.5s ease;
+    animation: fadeout 0.5s ease;
+    display: block;
+}
+
+@keyframes fadeout {
+    from {  opacity: 0;  }
+    to {  opacity: 1;  }
+}

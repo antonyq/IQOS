@@ -4,7 +4,7 @@ var currentScreen = 0;
 var screens = [0, 11, 35, 42];
 var cycles = [
     {   start: 5, end: 6, created: false   },
-    {   start: 15, end: 16, created: false }
+    {   start: 15, end: 16.5, created: false }
 ];
 var texts = [
     {   start: 0, end: 3    },
@@ -21,7 +21,13 @@ var touchAreas = [
     {   start: 5, end: 7   },
     {   start: 7, end: 18  }
 ];
+var stops = [
+    {   start: 11, end: 13  },
+    {   start: 35, end: 36  }
+];
+
 var animationDuration = 500; //ms
+var timeDelta = 1; //sec
 
 var video;
 
@@ -55,12 +61,34 @@ function mainFlowListener () {
             cycle.created = true;
         }
     });
+    stops.forEach(function (stop) {
+        if (!swiping && video.currentTime > stop.start && video.currentTime < stop.end) {
+            video.currentTime = stop.end;
+            video.pause();
+        }
+        if (!swiping && stop.passed && video.currentTime > stop.end + 1) stop.passed = false;
+    });
 }
 
 function swipeHandler (video, direction) {
     if (direction == 'left' && currentScreen != screens.length - 1) setCurrentScreen(video, ++currentScreen);
     else if (direction == 'right' && currentScreen != 0) setCurrentScreen(video, --currentScreen);
-    swiping = false;
+    else if (direction == 'up' || direction == 'down') {
+        for (stop of stops){
+            if (video.currentTime > stops.start && video.currentTime < stops.end) verticalSwipeHandler();
+            else video.play();
+        }
+    }
+    setTimeout(() => {swiping = false}, timeDelta * 1000);
+}
+
+function verticalSwipeHandler () {
+    for (stop of stops){
+        if (stop.start < video.currentTime && stop.end >= video.currentTime){
+            video.play();
+            break;
+        }
+    }
 }
 
 function getCycleListener (cycle) {
@@ -75,7 +103,7 @@ function getCycleListener (cycle) {
                     cycle.created = false;
                 });
             }
-            if (video.currentTime > cycle.end) setCurrentMoment(video, cycle.start);
+            if (video.currentTime > cycle.end && video.currentTime < cycle.end + timeDelta) setCurrentMoment(video, cycle.start);
         }
     }
     return cycleListener;
